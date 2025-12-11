@@ -16,11 +16,11 @@ public record ConfigPayload(boolean useCustomExpLevels, boolean curveMode, int b
                             int curveModeMultiplier, boolean useExpCap, int maxExpForNextLevel) implements CustomPayload {
     public static final CustomPayload.Id<ConfigPayload> ID = new CustomPayload.Id<>(FixedLevels.CONFIG_PACKET_ID);
     public static final PacketCodec<RegistryByteBuf, ConfigPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.BOOL, ConfigPayload::useCustomExpLevels,
-            PacketCodecs.BOOL, ConfigPayload::curveMode,
+            PacketCodecs.BOOLEAN, ConfigPayload::useCustomExpLevels,
+            PacketCodecs.BOOLEAN, ConfigPayload::curveMode,
             PacketCodecs.INTEGER, ConfigPayload::baseXPForOneLevel,
             PacketCodecs.INTEGER, ConfigPayload::curveModeMultiplier,
-            PacketCodecs.BOOL, ConfigPayload::useExpCap,
+            PacketCodecs.BOOLEAN, ConfigPayload::useExpCap,
             PacketCodecs.INTEGER, ConfigPayload::maxExpForNextLevel,
             ConfigPayload::new
     );

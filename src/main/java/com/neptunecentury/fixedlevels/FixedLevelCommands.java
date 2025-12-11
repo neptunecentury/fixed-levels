@@ -3,6 +3,8 @@ package com.neptunecentury.fixedlevels;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.permission.Permission;
+import net.minecraft.command.permission.PermissionLevel;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 
@@ -90,7 +92,7 @@ public class FixedLevelCommands {
                             )
                     )
                     .then(CommandManager.literal("set")
-                            .requires(source -> source.hasPermissionLevel(4))
+                            .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.OWNERS)))
                             .then(CommandManager.literal("useCustomExpLevels")
                                     .then(CommandManager.argument("value", BoolArgumentType.bool())
                                             .executes(context -> {

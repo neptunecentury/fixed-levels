@@ -1,6 +1,6 @@
 package com.neptunecentury.fixedlevels;
 
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * Common methods and fields for config classes
@@ -11,5 +11,5 @@ public interface IConfig {
      *
      * @return The CustomPayload object to send
      */
-    CustomPayload createPayload();
+    CustomPacketPayload createPayload();
 }

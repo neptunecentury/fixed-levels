@@ -4,8 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FixedLevels implements ModInitializer {
     // Public fields
-    public static final Identifier CONFIG_PACKET_ID = Identifier.of("fixed-levels", "config");
+    public static final Identifier CONFIG_PACKET_ID = Identifier.fromNamespaceAndPath("fixed-levels", "config");
     public static final String MOD_ID = "fixed-levels";
     // Private fields
     private static final Logger _logger = LoggerFactory.getLogger(MOD_ID);
@@ -36,7 +36,7 @@ public class FixedLevels implements ModInitializer {
         FixedLevelCommands.registerCommands("fixedlevels");
 
         // Register the custom payload
-        PayloadTypeRegistry.playS2C().register(ConfigPayload.ID, ConfigPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(ConfigPayload.ID, ConfigPayload.CODEC);
 
         // Register event when player joins server
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
@@ -56,7 +56,7 @@ public class FixedLevels implements ModInitializer {
      * @param server The server instance
      * @param player The player. Null if the server should send config to all player
      */
-    public static void initialize(MinecraftServer server, ServerPlayerEntity player){
+    public static void initialize(MinecraftServer server, ServerPlayer player){
         if (server == null){
             return;
         }
@@ -65,7 +65,7 @@ public class FixedLevels implements ModInitializer {
         var cfg = FixedLevels.getConfigManager().getConfig();
 
         // Set the enabled flag to true if this is single player or dedicated server and if the mod is enabled
-        FixedLevels.setEnabled(cfg.useCustomExpLevels && (server.isSingleplayer() || server.isDedicated()));
+        FixedLevels.setEnabled(cfg.useCustomExpLevels && (server.isSingleplayer() || server.isDedicatedServer()));
 
         // Check if single player mode or if this is the dedicated server. If dedicated, then the
         // mixin will be enabled here. Otherwise, the mixin will be enabled when it receives

@@ -1,9 +1,9 @@
 package com.neptunecentury.fixedlevels;
 
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * An implementation of the CustomPayload to store config options to encode and send to the client
@@ -13,20 +13,20 @@ import net.minecraft.network.packet.CustomPayload;
  * @param curveModeMultiplier
  */
 public record ConfigPayload(boolean useCustomExpLevels, boolean curveMode, int baseXPForOneLevel,
-                            int curveModeMultiplier, boolean useExpCap, int maxExpForNextLevel) implements CustomPayload {
-    public static final CustomPayload.Id<ConfigPayload> ID = new CustomPayload.Id<>(FixedLevels.CONFIG_PACKET_ID);
-    public static final PacketCodec<RegistryByteBuf, ConfigPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.BOOLEAN, ConfigPayload::useCustomExpLevels,
-            PacketCodecs.BOOLEAN, ConfigPayload::curveMode,
-            PacketCodecs.INTEGER, ConfigPayload::baseXPForOneLevel,
-            PacketCodecs.INTEGER, ConfigPayload::curveModeMultiplier,
-            PacketCodecs.BOOLEAN, ConfigPayload::useExpCap,
-            PacketCodecs.INTEGER, ConfigPayload::maxExpForNextLevel,
+                            int curveModeMultiplier, boolean useExpCap, int maxExpForNextLevel) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<ConfigPayload> ID = new CustomPacketPayload.Type<>(FixedLevels.CONFIG_PACKET_ID);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ConfigPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.BOOL, ConfigPayload::useCustomExpLevels,
+            ByteBufCodecs.BOOL, ConfigPayload::curveMode,
+            ByteBufCodecs.INT, ConfigPayload::baseXPForOneLevel,
+            ByteBufCodecs.INT, ConfigPayload::curveModeMultiplier,
+            ByteBufCodecs.BOOL, ConfigPayload::useExpCap,
+            ByteBufCodecs.INT, ConfigPayload::maxExpForNextLevel,
             ConfigPayload::new
     );
 
     @Override
-    public CustomPayload.Id<? extends CustomPayload> getId() {
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

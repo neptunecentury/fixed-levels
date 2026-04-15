@@ -1,7 +1,7 @@
 package com.neptunecentury.fixedlevels;
 
 import blue.endless.jankson.Comment;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * The configuration class that stores the options for the mod that can be persisted
@@ -31,7 +31,7 @@ public class LevelConfig implements IConfig {
      *
      * @return The custom payload created for the configuration object
      */
-    public CustomPayload createPayload() {
+    public CustomPacketPayload createPayload() {
         return new ConfigPayload(useCustomExpLevels, curveMode, baseXPForOneLevel, curveModeMultiplier, useExpCap, maxExpForNextLevel);
     }
 

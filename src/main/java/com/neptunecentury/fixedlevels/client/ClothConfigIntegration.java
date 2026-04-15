@@ -5,9 +5,9 @@ import com.neptunecentury.fixedlevels.ConfigManager;
 import com.neptunecentury.fixedlevels.LevelConfig;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Integrates the cloth config api to create an options screen
@@ -24,8 +24,8 @@ public class ClothConfigIntegration {
      * @param id   The id of the text to display
      * @return The text from the built key using type and id
      */
-    public static MutableText localize(String type, String id) {
-        return Text.translatable(type + "." + FixedLevels.MOD_ID + "." + id);
+    public static MutableComponent localize(String type, String id) {
+        return Component.translatable(type + "." + FixedLevels.MOD_ID + "." + id);
     }
 
     /**

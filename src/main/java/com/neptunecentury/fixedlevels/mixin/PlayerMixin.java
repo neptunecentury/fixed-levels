@@ -1,21 +1,21 @@
 package com.neptunecentury.fixedlevels.mixin;
 
 import com.neptunecentury.fixedlevels.FixedLevels;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public class PlayerMixin {
 
     @Shadow
     public int experienceLevel;
 
     @Inject(at = @At("HEAD"),
-            method = "getNextLevelExperience()I",
+            method = "getXpNeededForNextLevel()I",
             cancellable = true)
     private void mixinGetNextLevelExperience(CallbackInfoReturnable<Integer> cir) {
 
@@ -49,7 +49,7 @@ public class PlayerMixin {
      * Mixin to get vanilla calculation when custom exp levels is off.
      * @param cir The cir arg
      */
-    @Inject(at = @At("RETURN"), method = "getNextLevelExperience()I", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "getXpNeededForNextLevel()I", cancellable = true)
     private  void mixinGetNextLevelExperienceReturn(CallbackInfoReturnable<Integer> cir){
         // This uses the return mixin and gets the required exp. Since the mixin at head cancels when custom exp
         // levels is enabled, then this return mixin won't get fired. But if it is not canceled, then this means
